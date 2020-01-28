@@ -57,6 +57,7 @@ function Main({ navigation }) {
                 techs
             }
         });
+console.log(response.data);
 
         setDevs(response.data);
         setupWebsocket();
@@ -74,18 +75,20 @@ function Main({ navigation }) {
         <>
             <MapView style={styles.map} initialRegion={currentRegion} onRegionChangeComplete={handleRegionChanged}>
                 {devs.map(dev => {
-                    <Marker coordinate={{ latitude: dev.location.coordinates[1], longitude: dev.location.coordinates[0] }}  key={dev._id}>
-                        <Image style={styles.avatar} source={{uri: 'dev.avatar_url'}} />
-                        <Callout onPress={() => {
-                            navigation.navigate('Profile', { github_username: dev.github_username });
-                        }}>
-                            <View style={styles.callout}>
-                                <Text style={styles.devName}>{dev.name}</Text>
-                                {/* <Text style={styles.devBio}>{dev.bio}</Text> */}
-                                <Text style={styles.devTechs}>{dev.techs.join(', ')}</Text>
-                            </View>
-                        </Callout>
-                    </Marker>
+                    return (
+                        <Marker coordinate={{ latitude: dev.location.coordinates[1], longitude: dev.location.coordinates[0] }} key={dev._id}>
+                            <Image style={styles.avatar} source={{uri: dev.avatar_url}} />
+                            <Callout onPress={() => {
+                                navigation.navigate('Profile', { github_username: dev.github_username });
+                            }}>
+                                <View style={styles.callout}>
+                                    <Text style={styles.devName}>{dev.name}</Text>
+                                    <Text style={styles.devBio}>{dev.bio}</Text>
+                                    <Text style={styles.devTechs}>{dev.techs.join(', ')}</Text>
+                                </View>
+                            </Callout>
+                        </Marker>
+                    )
                 })}
             </MapView>
             <View style={styles.searchForm}>
